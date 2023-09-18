@@ -13,6 +13,7 @@ public class Task {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
+    private TaskStatus status;
     private List<String> tag;
     private int priority;
     private String description;
@@ -22,8 +23,9 @@ public class Task {
     private Date dateAdded;
     private Date dateCompleted;
 
-    public Task(String TITLE, List<String> tag, int priority, String description, String[] subtask, boolean isRecurring, TaskFrequency taskFrequency, Date dateAdded, Date dateCompleted) {
-        this.title = TITLE;
+    public Task(String title, TaskStatus status, List<String> tag, int priority, String description, String[] subtask, boolean isRecurring, TaskFrequency taskFrequency, Date dateAdded, Date dateCompleted) {
+        this.title = title;
+        this.status = status;
         this.tag = tag;
         this.priority = priority;
         this.description = description;
@@ -48,6 +50,14 @@ public class Task {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public TaskStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(TaskStatus status) {
+        this.status = status;
     }
 
     public List<String> getTag() {
