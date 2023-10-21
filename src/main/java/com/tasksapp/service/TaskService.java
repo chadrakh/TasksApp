@@ -2,11 +2,9 @@ package com.tasksapp.service;
 
 import com.tasksapp.model.Task;
 import com.tasksapp.model.TaskStatus;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
 public interface TaskService {
     List<Task> getTasks();
 
