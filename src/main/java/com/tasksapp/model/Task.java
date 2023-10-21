@@ -33,26 +33,27 @@ public class Task {
     private List<String> tag;
 
     @Column
-    private int priority;
+    @Enumerated(EnumType.STRING)
+    private TaskPriority priority;
 
     @Column
     private String description;
 
-    @Column
-    @ElementCollection
-    private List<String> subtask;
+    // @Column
+    // @ElementCollection
+    // private List<String> subtask;
 
-    @Column
-    private boolean isRecurring;
+    // @Column
+    // private boolean isRecurring;
 
-    @Column
-    @Enumerated(EnumType.STRING)
-    private TaskFrequency taskFrequency;
+    // @Column
+    // @Enumerated(EnumType.STRING)
+    // private TaskFrequency taskFrequency;
 
-    @Column
-    private Date dateAdded;
+    // @Column
+    // private Date dateAdded;
 
-    @Column
-    private Date dateCompleted;
+    // @Column
+    // private Date dateCompleted;
 
 }

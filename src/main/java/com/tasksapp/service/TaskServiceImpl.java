@@ -1,4 +1,58 @@
 package com.tasksapp.service;
 
-public class TaskServiceImpl {
+import com.tasksapp.model.Task;
+import com.tasksapp.model.TaskStatus;
+import com.tasksapp.repository.TaskRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class TaskServiceImpl implements TaskService {
+
+    @Autowired
+    TaskRepository taskRepository;
+
+    @Override
+    public List<Task> getTasks() {
+        List<Task> tasks = new ArrayList<>();
+        taskRepository.findAll().forEach(tasks::add);
+
+        return tasks;
+    }
+
+    @Override
+    public List<Task> getTasksById(Long id) {
+        return null;
+    }
+
+    @Override
+    public List<Task> getTasksByTitle(String title) {
+        return null;
+    }
+
+    @Override
+    public List<Task> getTasksByStatus(TaskStatus status) {
+        return null;
+    }
+
+    @Override
+    public Task createTask(Task task) {
+        return null;
+    }
+
+    @Override
+    public boolean updateTask(Task task) {
+        return false;
+    }
+
+    @Override
+    public boolean deleteTaskById(Long id) {
+        return false;
+    }
+
+    @Override
+    public boolean deleteTaskByTitle(String title) {
+        return false;
+    }
 }
