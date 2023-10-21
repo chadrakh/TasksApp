@@ -47,4 +47,21 @@ class TaskServiceTest {
         assertThat(result).isEqualTo(taskList);
     }
 
+    @Test
+    public void testGetTasksByTitleReturnsMatchedTask() {
+        String targetTitle = "Specific Task";
+
+        List<Task> taskList = Arrays.asList(
+                Task.builder().title(targetTitle).status(TaskStatus.INCOMPLETE).priority(TaskPriority.MEDIUM).description("This is a specific task.").build(),
+                Task.builder().title("Other Task").status(TaskStatus.INCOMPLETE).priority(TaskPriority.LOW).description("This is another task.").build()
+        );
+
+        List<Task> expected = taskList.stream().filter(task -> task.getTitle().equals(targetTitle)).toList();
+        List<Task> result = taskServiceImpl.getTasksByTitle(targetTitle);
+
+        when(mockTaskRepository.getTaskByTitleContainsIgnoreCase(targetTitle)).thenReturn(expected);
+
+        assertThat(result).isEqualTo(expected);
+    }
+
 }
