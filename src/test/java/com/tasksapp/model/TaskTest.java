@@ -1,4 +1,4 @@
-package api.tasks.model;
+package com.tasksapp.model;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
