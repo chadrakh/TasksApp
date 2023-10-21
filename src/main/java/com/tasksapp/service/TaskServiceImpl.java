@@ -2,10 +2,15 @@ package com.tasksapp.service;
 
 import com.tasksapp.model.Task;
 import com.tasksapp.model.TaskStatus;
-
+import com.tasksapp.repository.TaskRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 
 public class TaskServiceImpl implements TaskService {
+
+    @Autowired
+    TaskRepository taskRepository;
+
     @Override
     public List<Task> getTasks() {
         return null;
