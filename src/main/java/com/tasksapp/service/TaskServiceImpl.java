@@ -4,6 +4,8 @@ import com.tasksapp.model.Task;
 import com.tasksapp.model.TaskStatus;
 import com.tasksapp.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class TaskServiceImpl implements TaskService {
@@ -13,7 +15,10 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public List<Task> getTasks() {
-        return null;
+        List<Task> tasks = new ArrayList<>();
+        taskRepository.findAll().forEach(tasks::add);
+
+        return tasks;
     }
 
     @Override
