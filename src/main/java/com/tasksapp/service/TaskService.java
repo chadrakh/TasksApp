@@ -8,7 +8,7 @@ import java.util.List;
 public interface TaskService {
     List<Task> getTasks();
 
-    List<Task> getTasksById (Long id);
+    Task getTaskById (Long id);
 
     List<Task> getTasksByTitle (String title);
 

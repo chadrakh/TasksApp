@@ -11,6 +11,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -48,18 +49,41 @@ class TaskServiceTest {
     }
 
     @Test
-    public void testGetTasksByTitleReturnsMatchedTask() {
-        String targetTitle = "Specific Task";
+    public void testGetTaskByIdReturnsMatchedTask() {
+        Task targetTask = Task.builder().id(2L).title("Task 2").status(TaskStatus.INCOMPLETE).priority(TaskPriority.LOW).description("The target task").build();
 
         List<Task> taskList = Arrays.asList(
-                Task.builder().title(targetTitle).status(TaskStatus.INCOMPLETE).priority(TaskPriority.MEDIUM).description("This is a specific task.").build(),
-                Task.builder().title("Other Task").status(TaskStatus.INCOMPLETE).priority(TaskPriority.LOW).description("This is another task.").build()
+                Task.builder().id(1L).title("Task 1").status(TaskStatus.INCOMPLETE).priority(TaskPriority.LOW).description("The first task").build(),
+                targetTask,
+                Task.builder().id(3L).title("Task 3").status(TaskStatus.INCOMPLETE).priority(TaskPriority.LOW).description("The third task").build()
         );
 
-        List<Task> expected = taskList.stream().filter(task -> task.getTitle().equals(targetTitle)).toList();
+        when(mockTaskRepository.findById(targetTask.getId())).thenReturn(Optional.of(targetTask));
+
+        Task result = taskServiceImpl.getTaskById(targetTask.getId());
+
+        assertThat(result).isEqualTo(targetTask);
+
+    }
+
+    @Test
+    public void testGetTasksByTitleReturnsAllMatchedTasks() {
+        String targetTitle = "Target Title";
+
+        List<Task> taskList = Arrays.asList(
+                Task.builder().id(1L).title("An Existing Task").status(TaskStatus.INCOMPLETE).priority(TaskPriority.LOW).description("This is an existing task.").build(),
+                Task.builder().id(2L).title("Another Existing Task").status(TaskStatus.INCOMPLETE).priority(TaskPriority.LOW).description("This is another existing task.").build(),
+                Task.builder().id(3L).title(targetTitle).status(TaskStatus.INCOMPLETE).priority(TaskPriority.LOW).description("This is a task with the target title.").build(),
+                Task.builder().id(4L).title(targetTitle).status(TaskStatus.INCOMPLETE).priority(TaskPriority.LOW).description("This is another task with the target title.").build()
+        );
+
+        List<Task> expected = taskList.stream()
+                .filter(task -> task.getTitle().equalsIgnoreCase(targetTitle))
+                .toList();
+
         List<Task> result = taskServiceImpl.getTasksByTitle(targetTitle);
 
-        when(mockTaskRepository.getTaskByTitleContainsIgnoreCase(targetTitle)).thenReturn(expected);
+        when(mockTaskRepository.getTasksByTitleContainsIgnoreCase(targetTitle)).thenReturn(expected);
 
         assertThat(result).isEqualTo(expected);
     }
