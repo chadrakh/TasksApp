@@ -6,9 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
-import java.util.List;
-
 @Entity
 @Data
 @NoArgsConstructor
@@ -21,7 +18,7 @@ public class Task {
     @Column(updatable = false, nullable = false)
     private Long id;
 
-    @Column
+    @Column(nullable = false)
     private String title;
 
     @Column
@@ -29,15 +26,15 @@ public class Task {
     private TaskStatus status;
 
     @Column
-    @ElementCollection
-    private List<String> tag;
-
-    @Column
     @Enumerated(EnumType.STRING)
     private TaskPriority priority;
 
     @Column
     private String description;
+
+    // @Column
+    // @ElementCollection
+    // private List<String> tag;
 
     // @Column
     // @ElementCollection
