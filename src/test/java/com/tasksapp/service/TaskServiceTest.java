@@ -11,6 +11,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -45,6 +46,24 @@ class TaskServiceTest {
 
         assertThat(result).hasSize(3);
         assertThat(result).isEqualTo(taskList);
+    }
+
+    @Test
+    public void testGetTaskByIdReturnsMatchedTask() {
+        Task targetTask = Task.builder().id(2L).title("Task 2").status(TaskStatus.INCOMPLETE).priority(TaskPriority.LOW).description("The target task").build();
+
+        List<Task> taskList = Arrays.asList(
+                Task.builder().id(1L).title("Task 1").status(TaskStatus.INCOMPLETE).priority(TaskPriority.LOW).description("The first task").build(),
+                targetTask,
+                Task.builder().id(3L).title("Task 3").status(TaskStatus.INCOMPLETE).priority(TaskPriority.LOW).description("The third task").build()
+        );
+
+        when(mockTaskRepository.findById(targetTask.getId())).thenReturn(Optional.of(targetTask));
+
+        Task result = taskServiceImpl.getTaskById(targetTask.getId());
+
+        assertThat(result).isEqualTo(targetTask);
+
     }
 
     @Test
