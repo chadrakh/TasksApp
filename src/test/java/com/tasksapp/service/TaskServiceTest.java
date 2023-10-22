@@ -48,18 +48,23 @@ class TaskServiceTest {
     }
 
     @Test
-    public void testGetTasksByTitleReturnsMatchedTask() {
-        String targetTitle = "Specific Task";
+    public void testGetTasksByTitleReturnsAllMatchedTasks() {
+        String targetTitle = "Target Title";
 
         List<Task> taskList = Arrays.asList(
-                Task.builder().title(targetTitle).status(TaskStatus.INCOMPLETE).priority(TaskPriority.MEDIUM).description("This is a specific task.").build(),
-                Task.builder().title("Other Task").status(TaskStatus.INCOMPLETE).priority(TaskPriority.LOW).description("This is another task.").build()
+                Task.builder().id(1L).title("An Existing Task").status(TaskStatus.INCOMPLETE).priority(TaskPriority.LOW).description("This is an existing task.").build(),
+                Task.builder().id(2L).title("Another Existing Task").status(TaskStatus.INCOMPLETE).priority(TaskPriority.LOW).description("This is another existing task.").build(),
+                Task.builder().id(3L).title(targetTitle).status(TaskStatus.INCOMPLETE).priority(TaskPriority.LOW).description("This is a task with the target title.").build(),
+                Task.builder().id(4L).title(targetTitle).status(TaskStatus.INCOMPLETE).priority(TaskPriority.LOW).description("This is another task with the target title.").build()
         );
 
-        List<Task> expected = taskList.stream().filter(task -> task.getTitle().equals(targetTitle)).toList();
+        List<Task> expected = taskList.stream()
+                .filter(task -> task.getTitle().equalsIgnoreCase(targetTitle))
+                .toList();
+
         List<Task> result = taskServiceImpl.getTasksByTitle(targetTitle);
 
-        when(mockTaskRepository.getTaskByTitleContainsIgnoreCase(targetTitle)).thenReturn(expected);
+        when(mockTaskRepository.getTasksByTitleContainsIgnoreCase(targetTitle)).thenReturn(expected);
 
         assertThat(result).isEqualTo(expected);
     }
